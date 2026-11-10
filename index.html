@@ -58,7 +58,7 @@ button:focus-visible{outline:3px solid var(--candle);outline-offset:2px}
 .total{font-family:var(--display);font-size:2.2rem;min-width:2ch;text-align:center;color:var(--candle);text-shadow:0 3px 0 var(--outl)}
 .track{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:3px;align-items:end}
 .tc{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0 3px;border-radius:8px}
-.tc .bar{width:60%;background:var(--line);border-radius:3px 3px 0 0}
+.tc .bar{width:60%;background:var(--line);border-radius:3px 3px 0 0;position:static;border:0;padding:0;z-index:auto}
 .tc .tn{font-family:var(--display);font-size:.9rem;color:var(--dim);line-height:1}
 .tc .td{display:flex;gap:2px;height:6px}
 .tc .td i{width:5px;height:5px;border-radius:50%;background:var(--candle)}
@@ -244,6 +244,25 @@ small.ai{font-family:var(--body);font-size:.6rem;font-weight:900;background:var(
 .k-demon .art::after{content:"";position:absolute;inset:4px 4px 0;border-radius:9px 9px 0 0;background:linear-gradient(115deg,transparent 30%,#ffffff75 44%,#7fe3ff55 51%,#ff7ad955 58%,transparent 70%);background-size:300% 100%;mix-blend-mode:overlay;animation:holo 4s linear infinite;pointer-events:none}
 @keyframes holo{from{background-position:130% 0}to{background-position:-130% 0}}
 .card.big{will-change:transform}
+/* Solo PC (mouse + finestra larga). Telefoni e tablet restano sempre verticali. */
+@media (min-width:1000px) and (hover:hover) and (pointer:fine){
+  .wrap{max-width:1500px;display:grid;column-gap:16px;row-gap:12px;align-items:start;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:"top top" "opps me" "table me" "log me";grid-template-rows:auto auto auto 1fr}
+  .wrap>.top{grid-area:top}.wrap>.opps{grid-area:opps}.wrap>.table{grid-area:table}.wrap>.me{grid-area:me}.wrap>.logbox{grid-area:log}
+  .wrap>.setup{grid-column:1/-1;justify-self:center;width:100%;max-width:600px}
+  .opps{flex-direction:row;flex-wrap:wrap}.opps>.oppb{flex:1 1 220px;min-width:0}
+  .table .rowscroll{flex-wrap:wrap;overflow:visible;scroll-snap-type:none}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
+  .bar .in{max-width:760px}
+  .modal:not(.ritual):not(.vs):not(.reveal){align-items:center}
+}
+/* PC con schermo grande: tre colonne, avversari a sinistra, tavolo al centro, tu a destra */
+@media (min-width:1280px) and (hover:hover) and (pointer:fine){
+  .wrap{grid-template-columns:minmax(240px,300px) minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:"top top top" "opps table me" "log table me";grid-template-rows:auto auto 1fr}
+  .opps{flex-direction:column}.opps>.oppb{flex:none}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
