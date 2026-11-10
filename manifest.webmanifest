@@ -1,0 +1,16 @@
+{
+ "name": "Cerchio di Mezzanotte",
+ "short_name": "Mezzanotte",
+ "start_url": ".",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#231334",
+ "theme_color": "#231334",
+ "icons": [
+  {
+   "src": "icon.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  }
+ ]
+}
