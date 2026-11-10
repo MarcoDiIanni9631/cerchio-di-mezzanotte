@@ -244,6 +244,13 @@ small.ai{font-family:var(--body);font-size:.6rem;font-weight:900;background:var(
 .k-demon .art::after{content:"";position:absolute;inset:4px 4px 0;border-radius:9px 9px 0 0;background:linear-gradient(115deg,transparent 30%,#ffffff75 44%,#7fe3ff55 51%,#ff7ad955 58%,transparent 70%);background-size:300% 100%;mix-blend-mode:overlay;animation:holo 4s linear infinite;pointer-events:none}
 @keyframes holo{from{background-position:130% 0}to{background-position:-130% 0}}
 .card.big{will-change:transform}
+.decks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.deckopt{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;font-family:var(--body)}
+.deckopt b{font-family:var(--display);font-weight:400;font-size:1.05rem}
+.deckopt small{font-size:.75rem;font-weight:700;opacity:.8;line-height:1.25}
+.deckopt[aria-pressed="true"]{background:var(--candle);color:var(--outl)}
+.deckopt:disabled{opacity:.75}
+.ctag .set{color:#b23ad6}
 /* Solo PC (mouse + finestra larga). Telefoni e tablet restano sempre verticali. */
 @media (min-width:1000px) and (hover:hover) and (pointer:fine){
   .wrap{max-width:1500px;display:grid;column-gap:16px;row-gap:12px;align-items:start;
@@ -333,6 +340,13 @@ function kid(o,k){
   if(a.includes("lolly"))s+=`<path d="M82 94 L82 66" ${st(3)}/><circle cx="82" cy="60" r="9" fill="#ff7ab8" ${S}/><path d="M82 55 a5 5 0 1 1 -5 5 a3 3 0 1 1 3 -3" fill="none" stroke="#fff" stroke-width="1.8"/>`;
   if(a.includes("sling"))s+=`<path d="M84 94 L84 72 L78 62 M84 72 L90 62" fill="none" stroke="${O}" stroke-width="5.5" stroke-linecap="round"/><path d="M84 94 L84 72 L78 62 M84 72 L90 62" fill="none" stroke="#b5793f" stroke-width="3" stroke-linecap="round"/>`;
   if(a.includes("bug"))s+=`<g transform="translate(80 70)"><ellipse rx="7" ry="5" fill="#43c47e" ${st(1.8)}/><circle cx="7" cy="-1" r="3" fill="#43c47e" ${st(1.5)}/><path d="M-4 4 L-6 8 M0 5 L0 9 M4 4 L6 8" ${st(1.4)}/></g>`;
+  if(a.includes("nose"))s+=`<circle cx="50" cy="51" r="4.2" fill="#ff3b3b" ${st(1.6)}/><circle cx="48.6" cy="49.6" r="1.2" fill="#fff"/>`;
+  if(a.includes("tophat"))s+=`<path d="M37 24 L39 3 L61 3 L63 24Z" fill="#2b1d33" ${st(2)}/><rect x="38" y="17" width="24" height="5" fill="#e34b4b"/><path d="M28 25 Q50 20 72 25 Q50 30 28 25Z" fill="#2b1d33" ${st(2)}/>`;
+  if(a.includes("star"))s+=`<path d="M64 52 l1.6 3.4 3.6 .4 -2.7 2.4 .8 3.6 -3.3 -1.9 -3.3 1.9 .8 -3.6 -2.7 -2.4 3.6 -.4Z" fill="#56a9ff" ${st(1)}/>`;
+  if(a.includes("pencil"))s+=`<g transform="translate(76 40) rotate(-30)"><rect x="-2.5" y="-14" width="5" height="22" fill="#ffd23f" ${st(1.4)}/><path d="M-2.5 8 L0 13 L2.5 8Z" fill="#f4c99a" ${st(1.2)}/><rect x="-2.5" y="-17" width="5" height="3.5" fill="#ff8fb3" ${st(1.2)}/></g>`;
+  if(a.includes("whip"))s+=`<path d="M84 94 L84 70 Q96 52 78 40" fill="none" stroke="${O}" stroke-width="4.5" stroke-linecap="round"/><path d="M84 94 L84 70 Q96 52 78 40" fill="none" stroke="#b5793f" stroke-width="2.2" stroke-linecap="round"/>`;
+  if(a.includes("balls"))s+=[["#ff4d3d",78,58],["#56a9ff",86,46],["#ffd23f",90,62]].map(([c,x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="${c}" ${st(1.6)}/>`).join("");
+  if(a.includes("keys"))s+=`<g transform="translate(82 74)"><circle r="5" fill="none" stroke="#c9a227" stroke-width="2.4"/><path d="M3 4 L8 12 M6 8 L9 7" stroke="#c9a227" stroke-width="2.4" stroke-linecap="round"/></g>`;
   return s;
 }
 const AN={
@@ -343,7 +357,14 @@ const AN={
  skunk:()=>grass()+`<path d="M58 88 Q96 82 90 40 Q86 12 64 20 Q82 30 76 52 Q72 70 54 76Z" fill="#3b2d45" ${S}/><path d="M70 26 Q84 36 80 56 Q76 70 64 77" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/><ellipse cx="42" cy="80" rx="22" ry="13" fill="#3b2d45" ${S}/><circle cx="28" cy="36" r="5" fill="#3b2d45" ${S}/><circle cx="56" cy="36" r="5" fill="#3b2d45" ${S}/><ellipse cx="42" cy="52" rx="20" ry="18" fill="#3b2d45" ${S}/><path d="M42 34 Q37 46 42 54 Q47 46 42 34Z" fill="#fff"/><circle cx="34" cy="52" r="3.6" fill="#fff"/><circle cx="34.5" cy="52.5" r="2" fill="${O}"/><circle cx="50" cy="52" r="3.6" fill="#fff"/><circle cx="50.5" cy="52.5" r="2" fill="${O}"/><ellipse cx="42" cy="61" rx="3" ry="2.2" fill="#ff8fb3"/><path d="M14 22 q4 -4 8 0 q4 4 8 0 M70 8 q3 -3 6 0" fill="none" stroke="#9ad15d" stroke-width="2.4" stroke-linecap="round"/>`,
  hawk:()=>`<rect width="100" height="90" fill="#ffd98a"/><ellipse cx="22" cy="20" rx="14" ry="5" fill="#fff6dd"/><ellipse cx="80" cy="74" rx="16" ry="5" fill="#fff6dd"/><path d="M28 94 Q24 62 44 48 L70 60 Q78 80 74 94Z" fill="#8a5a35" ${S}/><path d="M40 66 Q50 74 48 90 M56 64 Q64 74 62 90" fill="none" ${st(1.8)}/><path d="M30 52 Q28 22 54 20 Q72 20 76 36 L66 48 Q52 56 30 52Z" fill="#a8703f" ${S}/><path d="M50 30 Q66 26 72 36 L64 44 Q54 46 50 30Z" fill="#f5ead8"/><path d="M70 31 Q88 31 88 45 Q83 40 74 44Z" fill="#ffc21a" ${S}/><circle cx="61" cy="35" r="4.2" fill="#ffd400" ${st(1.6)}/><circle cx="61.6" cy="35" r="2.1" fill="${O}"/><path d="M53 28 L67 31" ${st(3.2)}/>`,
  parrot:()=>`<rect width="100" height="90" fill="#a7f0c9"/><path d="M0 0 Q20 30 0 50Z M100 10 Q76 34 100 60Z" fill="#43c47e"/><path d="M44 70 L36 94 L48 94 L54 72Z" fill="#43c47e" ${S}/><ellipse cx="50" cy="58" rx="18" ry="22" fill="#3b8cff" ${S}/><ellipse cx="51" cy="64" rx="10" ry="14" fill="#ffd23f"/><path d="M34 50 Q30 72 44 80 Q42 62 41 50Z" fill="#43c47e" ${S}/><path d="M44 18 L42 8 L50 15 L54 6 L56 17Z" fill="#ff4d4d" ${S}/><circle cx="50" cy="32" r="16" fill="#ff4d4d" ${S}/><ellipse cx="56" cy="30" rx="6" ry="5" fill="#fff" ${st(1.4)}/><circle cx="57" cy="30" r="2.3" fill="${O}"/><path d="M60 32 Q73 32 70 47 Q66 40 60 40Z" fill="#f2e6c8" ${S}/>`,
- alligator:()=>{let t="";for(let x=16;x<=72;x+=7)t+=`<path d="M${x} 56 L${x+3} 61 L${x+6} 56Z" fill="#fff" ${st(1.2)}/>`;return `<rect width="100" height="90" fill="#9fd8c7"/><path d="M0 68 Q25 62 50 68 Q75 74 100 68 L100 90 L0 90Z" fill="#4fa3a0"/><path d="M8 58 Q8 44 30 42 L62 38 Q80 30 92 44 Q95 64 80 66 L30 68 Q8 68 8 58Z" fill="#4caf50" ${S}/>`+[66,82].map(x=>`<circle cx="${x}" cy="35" r="7" fill="#4caf50" ${S}/><ellipse cx="${x}" cy="35" rx="3.5" ry="4" fill="#ffe14d" ${st(1.2)}/><rect x="${x-.8}" y="31.5" width="1.6" height="7" fill="${O}"/>`).join("")+`<path d="M12 56 L86 56" fill="none" ${S}/>${t}<circle cx="15" cy="48" r="1.4" fill="${O}"/><circle cx="20" cy="47" r="1.4" fill="${O}"/><path d="M40 48 l4 -3 M52 46 l4 -3" ${st(1.4)}/><path d="M10 78 q6 -4 12 0 M60 82 q6 -4 12 0" fill="none" stroke="#d6f5ef" stroke-width="2" stroke-linecap="round"/>`}
+ alligator:()=>{let t="";for(let x=16;x<=72;x+=7)t+=`<path d="M${x} 56 L${x+3} 61 L${x+6} 56Z" fill="#fff" ${st(1.2)}/>`;return `<rect width="100" height="90" fill="#9fd8c7"/><path d="M0 68 Q25 62 50 68 Q75 74 100 68 L100 90 L0 90Z" fill="#4fa3a0"/><path d="M8 58 Q8 44 30 42 L62 38 Q80 30 92 44 Q95 64 80 66 L30 68 Q8 68 8 58Z" fill="#4caf50" ${S}/>`+[66,82].map(x=>`<circle cx="${x}" cy="35" r="7" fill="#4caf50" ${S}/><ellipse cx="${x}" cy="35" rx="3.5" ry="4" fill="#ffe14d" ${st(1.2)}/><rect x="${x-.8}" y="31.5" width="1.6" height="7" fill="${O}"/>`).join("")+`<path d="M12 56 L86 56" fill="none" ${S}/>${t}<circle cx="15" cy="48" r="1.4" fill="${O}"/><circle cx="20" cy="47" r="1.4" fill="${O}"/><path d="M40 48 l4 -3 M52 46 l4 -3" ${st(1.4)}/><path d="M10 78 q6 -4 12 0 M60 82 q6 -4 12 0" fill="none" stroke="#d6f5ef" stroke-width="2" stroke-linecap="round"/>`},
+ elephant:()=>rays("#ffe8b0","#ffd27a")+mir(`<circle cx="26" cy="46" r="17" fill="#8a95a8" ${S}/><circle cx="27" cy="47" r="10" fill="#ffb3c6"/>`)+`<ellipse cx="50" cy="86" rx="26" ry="14" fill="#9aa5b8" ${S}/><circle cx="50" cy="44" r="20" fill="#9aa5b8" ${S}/><path d="M46 56 Q42 74 52 80 Q62 84 64 74" fill="none" stroke="${O}" stroke-width="10.5" stroke-linecap="round"/><path d="M46 56 Q42 74 52 80 Q62 84 64 74" fill="none" stroke="#9aa5b8" stroke-width="6" stroke-linecap="round"/>`+mir(`<circle cx="42" cy="42" r="2.8" fill="${O}"/><circle cx="43" cy="41" r="1" fill="#fff"/>`)+`<path d="M43 27 L57 27 L55 16 L45 16Z" fill="#e34b4b" ${st(1.8)}/><path d="M55 16 Q62 14 62 22" fill="none" stroke="#ffd23f" stroke-width="2"/>`,
+ lion:()=>{let m="";for(let i=0;i<14;i++){const r=i*360/14*Math.PI/180;m+=`<circle cx="${(50+24*Math.cos(r)).toFixed(1)}" cy="${(46+23*Math.sin(r)).toFixed(1)}" r="9" fill="#c8641e" ${S}/>`}
+   return rays("#ffd9a8","#ffc37a")+m+`<circle cx="50" cy="46" r="20" fill="#f2b24c" ${S}/>`+mir(`<circle cx="35" cy="30" r="5" fill="#f2b24c" ${st(2)}/><ellipse cx="43" cy="43" rx="2.8" ry="3.4" fill="${O}"/>`)+`<path d="M46 50 L54 50 L50 55Z" fill="#7a3b1e" ${st(1.4)}/><path d="M50 55 Q46 61 41 58 M50 55 Q54 61 59 58" fill="none" ${st(1.8)}/><path d="M30 18 L36 10 L42 18 L50 8 L58 18 L64 10 L70 18Z" fill="#ffd23f" ${st(1.8)}/>`},
+ seal:()=>`<rect width="100" height="90" fill="#bfe3ff"/><path d="M0 74 Q25 66 50 74 Q75 82 100 74 L100 90 L0 90Z" fill="#5aa9e6"/><path d="M30 92 Q22 60 40 44 Q52 34 62 44 Q74 58 70 92Z" fill="#6f7f99" ${S}/><path d="M28 80 Q14 82 12 72 Q22 70 32 74Z M70 80 Q84 82 88 72 Q78 70 68 74Z" fill="#5d6b84" ${st(2)}/><ellipse cx="51" cy="50" rx="5" ry="3.5" fill="${O}"/>`+mir(`<circle cx="45" cy="44" r="2.6" fill="${O}"/><circle cx="46" cy="43" r=".9" fill="#fff"/><path d="M40 52 L32 50 M40 54 L32 56" ${st(1.2)} fill="none"/>`)+`<circle cx="51" cy="20" r="12" fill="#fff" ${S}/><path d="M39 20 Q51 12 63 20 M41 26 Q51 20 61 26" fill="none" stroke="#e34b4b" stroke-width="3"/><path d="M51 8 L51 32" stroke="#56a9ff" stroke-width="3"/><circle cx="51" cy="20" r="12" fill="none" ${S}/>`,
+ hamster:()=>`<rect width="100" height="90" fill="#ffe9c7"/><path d="M0 76 L100 76 L100 90 L0 90Z" fill="#e8c48f"/><path d="M8 82 L92 82" stroke="#d4a86a" stroke-width="2"/><ellipse cx="50" cy="60" rx="27" ry="23" fill="#e8a85c" ${S}/><ellipse cx="50" cy="68" rx="15" ry="13" fill="#fff3dd"/>`+mir(`<circle cx="32" cy="38" r="6" fill="#e8a85c" ${S}/><circle cx="32" cy="38" r="3" fill="#ffb3c6"/><circle cx="34" cy="56" r="7" fill="#f5c08a"/><circle cx="43" cy="50" r="3" fill="${O}"/><circle cx="44" cy="49" r="1" fill="#fff"/>`)+`<ellipse cx="50" cy="56" rx="2.6" ry="2" fill="#ff7aa8"/><path d="M50 58 Q47 61 45 59 M50 58 Q53 61 55 59" fill="none" ${st(1.4)}/><g transform="translate(50 74)"><ellipse rx="4" ry="7" fill="#3b2d45" ${st(1.4)}/><path d="M0 -6 L0 6" stroke="#fff" stroke-width="1.4"/></g>`,
+ goldfish:()=>`<rect width="100" height="90" fill="#fff4e0"/><rect x="0" y="80" width="100" height="10" fill="#b5793f"/><circle cx="50" cy="46" r="34" fill="#cdeeff" ${S}/><path d="M19 40 Q50 32 81 40" fill="none" stroke="#fff" stroke-width="2"/><path d="M58 52 L74 42 L72 62Z" fill="#ff8a3d" ${st(2)}/><ellipse cx="46" cy="52" rx="14" ry="10" fill="#ff8a3d" ${S}/><circle cx="40" cy="50" r="2.4" fill="${O}"/><path d="M33 54 Q35 56 37 54" fill="none" ${st(1.4)}/><path d="M46 44 Q50 38 54 44" fill="#ffb02e" ${st(1.4)}/>`+[[30,30,3],[36,22,2],[62,26,2.4]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1.4"/>`).join("")+`<path d="M30 80 L70 80" ${st(3)}/>`,
+ turtle:()=>grass()+`<path d="M18 70 L14 80 L24 80Z M70 70 L74 80 L64 80Z" fill="#9ccc65" ${st(2)}/><circle cx="82" cy="58" r="9" fill="#9ccc65" ${S}/><circle cx="85" cy="56" r="2" fill="${O}"/><path d="M82 63 Q86 65 89 62" fill="none" ${st(1.4)}/><path d="M16 70 Q50 18 80 70Z" fill="#4caf50" ${S}/><path d="M30 68 L38 50 L50 44 L62 50 L68 68 M38 50 L34 36 M62 50 L66 36 M50 44 L50 30" fill="none" stroke="#2e7d32" stroke-width="2.2" stroke-linejoin="round"/><circle cx="84" cy="56" r="5" fill="none" ${st(1.6)}/><path d="M74 54 L79 55" ${st(1.4)}/>`
 };
 const DSPEC={
  clockwork:{c:"#d64545",horn:"curve",eyes:2,mouth:"grin",x:"gear"},
@@ -360,7 +381,13 @@ const DSPEC={
  wraithlox:{c:"#aef0ec",horn:"none",eyes:2,mouth:"o",x:"ghost"},
  baphometal:{c:"#4a4a5c",horn:"ram",eyes:2,mouth:"tongue",x:"spikes"},
  mammon:{c:"#e0b52a",horn:"short",eyes:2,mouth:"grin",x:"coins"},
- lilin:{c:"#6a4fc0",horn:"curve",eyes:3,mouth:"smile",x:"wings"}
+ lilin:{c:"#6a4fc0",horn:"curve",eyes:3,mouth:"smile",x:"wings"},
+ golosone:{c:"#ffb347",horn:"short",eyes:2,mouth:"tongue",x:"bib"},
+ strillone:{c:"#ff5577",horn:"long",eyes:3,mouth:"o",x:"spikes"},
+ burattinaio:{c:"#7a5cff",horn:"curve",eyes:2,mouth:"grin",x:"strings"},
+ campanella:{c:"#e0b52a",horn:"short",eyes:2,mouth:"smile",x:"bell"},
+ specchio:{c:"#b8c4d6",horn:"none",eyes:1,mouth:"fangs",x:"wings"},
+ pennarotto:{c:"#3fa7d6",horn:"bull",eyes:2,mouth:"grin",x:"crown"}
 };
 function dicePips(n,x,y,w){const P={1:[[1,1]],2:[[0,0],[2,2]],3:[[0,0],[1,1],[2,2]],4:[[0,0],[2,0],[0,2],[2,2]],5:[[0,0],[2,0],[1,1],[0,2],[2,2]],6:[[0,0],[2,0],[0,1],[2,1],[0,2],[2,2]]};return P[n].map(([i,j])=>`<circle cx="${(x+w*(.22+i*.28)).toFixed(1)}" cy="${(y+w*(.22+j*.28)).toFixed(1)}" r="${(w*.1).toFixed(1)}" fill="${O}"/>`).join("")}
 function headUnit(d){
@@ -402,7 +429,9 @@ function demonArt(id){
   if(d.x==="ghost")s+=`<path d="M24 94 L24 70 Q24 60 50 60 Q76 60 76 70 L76 94 L70 86 L63 94 L56 86 L50 94 L44 86 L37 94 L30 86Z" fill="${c}" fill-opacity=".9" ${S}/>`;
   else s+=`<path d="M18 94 Q18 64 50 62 Q82 64 82 94Z" fill="${c}" ${S}/>`;
   if(d.x==="spikes")s+=`<path d="M22 78 Q50 70 78 78" fill="none" stroke="${O}" stroke-width="7"/>`+[28,38,50,62,72].map(x=>`<path d="M${x-3} ${x===50?72:74} L${x} ${x===50?65:67} L${x+3} ${x===50?72:74}Z" fill="#dfe3ea" ${st(1.2)}/>`).join("");
+  if(d.x==="bell")s+=`<path d="M43 80 Q42 68 50 67 Q58 68 57 80 L60 84 L40 84Z" fill="#ffd23f" ${st(1.8)}/><circle cx="50" cy="86" r="2.4" fill="${O}"/>`;
   if(d.x==="bib")s+=`<path d="M38 64 Q50 84 62 64Z" fill="#fff" ${S}/><circle cx="50" cy="71" r="2" fill="#ff8a3d"/>`;
+  if(d.x==="strings")s+=`<path d="M18 4 L82 4" stroke="#8b5a2b" stroke-width="5" stroke-linecap="round"/>`+[30,50,70].map(x=>`<path d="M${x} 4 L${x} 30" stroke="#fff" stroke-opacity=".75" stroke-width="1.4"/>`).join("");
   if(d.x==="twin")s+=`<g transform="translate(-2 14.3) scale(.72)">${headUnit(d)}</g><g transform="translate(30 14.3) scale(.72)">${headUnit(Object.assign({},d,{c:"#b03a75"}))}</g>`;
   else s+=headUnit(d);
   return s;
@@ -479,7 +508,37 @@ const B={
  hawk:{n:"Falco",k:"animal",a:[12],q:1,v:1.5,x:"Puoi scartarla: scopri 7 carte del mazzo e prendi tutti gli Animali.",fx:async(p,c)=>{
    const y=await ask(p,"Falco: la scarti per cercare Animali nelle prime 7 carte?",[{l:"Sì, a caccia",v:1},{l:"No",v:0}],()=>1);if(!y)return;discardCard(p,c);let n=0;
    for(let i=0;i<7;i++){const d=draw();if(!d)break;if(B[d.id].k==="animal"){gainCard(p,d);n++}else G.discard.push(d)}say(`Il falco porta a ${p.name} ${n} ${n===1?"animale":"animali"}`)}},
- skunk:{n:"Puzzola",k:"animal",a:[12],q:1,v:-2,x:"Obbligatoria: tutti scartano le carte non-demone, compresa questa.",fx:async(p,c)=>{say(`PUZZOLA! Tutti scartano le loro carte`);sfx.bad();gas();document.getElementById("app").classList.add("shake");setTimeout(()=>{const a=document.getElementById("app");a&&a.classList.remove("shake")},600);for(const o of G.players){if(o!==p&&prot(o,p))continue;G.discard.push(...o.cards);o.cards=[]}}}
+ skunk:{n:"Puzzola",k:"animal",a:[12],q:1,v:-2,x:"Obbligatoria: tutti scartano le carte non-demone, compresa questa.",fx:async(p,c)=>{say(`PUZZOLA! Tutti scartano le loro carte`);sfx.bad();gas();document.getElementById("app").classList.add("shake");setTimeout(()=>{const a=document.getElementById("app");a&&a.classList.remove("shake")},600);for(const o of G.players){if(o!==p&&prot(o,p))continue;G.discard.push(...o.cards);o.cards=[]}}},
+ // ===== CIRCO MALEDETTO =====
+ clown:{s:"circo",n:"Pagliaccio Bubù",k:"boy",t:"rotten",a:[5],q:2,v:1.4,art:{style:"curly",hair:"#3fd16b",skin:"#fff1e6",shirt:"#ff4d3d",acc:["nose"]},x:"Spettacolo: prendi 1 anima per ogni tua carta che si attiva con questo lancio.",fx:async(p,c)=>gain(p,Math.max(1,(G.actN||[])[G.players.indexOf(p)]||1),c)},
+ acrobat:{s:"circo",n:"Acrobata Lilli",k:"girl",t:"sweet",a:[8],q:2,v:1.5,art:{style:"bun",hair:"#f7c948",skin:"#ffd9b8",shirt:"#56a9ff",acc:["star"]},x:"Spettacolo: se con questo lancio si attivano almeno 2 tue carte, prendi 3 anime.",fx:async(p,c)=>{if(((G.actN||[])[G.players.indexOf(p)]||0)>=2)gain(p,3,c)}},
+ juggler:{s:"circo",n:"Giocoliere Nico",k:"boy",a:[6],q:2,v:1.2,art:{style:"cap",capc:"#a77bff",skin:"#c68642",shirt:"#ffd23f",acc:["balls"]},x:"Puoi scambiare una tua carta con una della Bancarella.",fx:async(p,c)=>{
+   if(!G.block.length||!p.cards.length)return;
+   const bi=await ask(p,"Giocoliere Nico: quale carta prendi dalla Bancarella?",[...G.block.map((k,i)=>({l:`${B[k.id].n} (si attiva col ${B[k.id].a.join(",")})`,v:i})),{l:"Nessuna, lascia stare",v:-1}],()=>{const bb=G.block.reduce((b,k,i)=>val(k)>val(G.block[b])?i:b,0);const low=Math.min(...p.cards.map(val));return val(G.block[bb])>low+.05?bb:-1});
+   if(bi<0)return;const mine=p.cards.filter(k=>k!==c);if(!mine.length)return;
+   const mi=await ask(p,"E quale delle tue carte metti nella Bancarella?",mine.map((k,i)=>({l:B[k.id].n,v:i})),()=>mine.reduce((b,k,i)=>val(k)<val(mine[b])?i:b,0));
+   const take=G.block[bi],give=mine[mi];G.block[bi]=give;remove(p,give);gainCard(p,take);say(`${p.name} scambia ${B[give.id].n} con ${B[take.id].n}`)}},
+ tamer:{s:"circo",n:"Domatrice Vera",k:"girl",t:"rotten",a:[9],q:2,v:1.6,art:{style:"bob",hair:"#2b1d1d",skin:"#f1c27d",shirt:"#e34b4b",acc:["tophat","whip"]},x:"Ruba un Animale a un avversario.",fx:async(p,c)=>{
+   const ts=opps(p).filter(o=>!prot(o,p)).flatMap(o=>o.cards.filter(k=>B[k.id].k==="animal").map(k=>({o,k})));if(!ts.length)return;
+   const j=await ask(p,"Domatrice Vera: quale Animale ti prendi?",ts.map((t,i)=>({l:`${B[t.k.id].n} di ${t.o.name}`,v:i})),()=>ts.reduce((b,t,i)=>val(t.k)>val(ts[b].k)?i:b,0));
+   const t=ts[j];remove(t.o,t.k);gainCard(p,t.k);float(t.o,null,"✕","bad");say(`${p.name} doma ${B[t.k.id].n} di ${t.o.name}!`);sfx.bad()}},
+ elephant:{s:"circo",n:"Elefante",k:"animal",a:[4],q:2,v:1.6,x:"Se hai almeno 2 Animali, prendi 3 anime.",fx:async(p,c)=>{if(p.cards.filter(k=>B[k.id].k==="animal").length>=2)gain(p,3,c)}},
+ lion:{s:"circo",n:"Leone",k:"animal",a:[10],q:1,v:1.2,x:"Puoi scartarla: ogni avversario perde 3 anime.",fx:async(p,c)=>{
+   const ts=opps(p).filter(o=>!prot(o,p)&&o.souls>0);if(!ts.length)return;
+   const y=await ask(p,"Leone: lo scateni? Ogni avversario perde 3 anime.",[{l:"Sì, ruggisci!",v:1},{l:"No, tienilo",v:0}],()=>ts.reduce((s,o)=>s+Math.min(3,o.souls),0)>=4?1:0);if(!y)return;
+   discardCard(p,c);sfx.bad();shake();for(const o of ts){const n=Math.min(3,o.souls);o.souls-=n;float(o,null,"−"+n,"bad")}say(`Il Leone di ${p.name} ruggisce: tutti perdono anime!`)}},
+ seal:{s:"circo",n:"Foca",k:"animal",a:[3],q:2,v:1.4,x:"Scopri 3 carte del mazzo: prendine una e scarta le altre.",fx:async(p,c)=>{
+   const ds=[];for(let i=0;i<3;i++){const d=draw();if(d)ds.push(d)}if(!ds.length)return;
+   const j=await ask(p,"Foca: quale carta prendi?",ds.map((d,i)=>({l:`${B[d.id].n}: ${B[d.id].x}`,v:i})),()=>ds.reduce((b,d,i)=>val(d)>val(ds[b])?i:b,0));
+   ds.forEach((d,i)=>{if(i===j)gainCard(p,d);else G.discard.push(d)});say(`La foca porta a ${p.name}: ${B[ds[j].id].n}`)}},
+ // ===== SCUOLA STREGATA =====
+ teacher:{s:"scuola",n:"Maestra Ada",k:"girl",t:"sweet",a:[7],q:2,v:1.8,art:{style:"bun",hair:"#8a8a99",skin:"#ffd9b8",shirt:"#7ccf6b",acc:["glasses"]},x:"Compito: se hai almeno 1 Maschio, 1 Femmina e 1 Animale, prendi 4 anime.",fx:async(p,c)=>{const ks=new Set(p.cards.map(k=>B[k.id].k));if(ks.has("boy")&&ks.has("girl")&&ks.has("animal"))gain(p,4,c)}},
+ nerd:{s:"scuola",n:"Secchione Leo",k:"boy",t:"sweet",a:[4],q:2,v:1.5,art:{style:"bowl",hair:"#6b3e26",skin:"#f1c27d",shirt:"#8fd3ff",acc:["glasses","pencil"]},x:"Prendi 1 anima per ogni tuo Demone evocato (almeno 1).",fx:async(p,c)=>gain(p,Math.max(1,p.demons.length),c)},
+ bully:{s:"scuola",n:"Bulla Greta",k:"girl",t:"rotten",a:[8],q:2,v:1.6,art:{style:"pigtails",hair:"#d9572b",skin:"#ffd9b8",shirt:"#3b2d45",acc:["bandaid","freckles"]},x:"Il giocatore con più anime ti dà 2 anime.",fx:async(p,c)=>{const ts=opps(p).filter(o=>!prot(o,p)&&o.souls>0);if(!ts.length)return;const o=ts.reduce((b,x)=>x.souls>b.souls?x:b);if(o.souls<=0)return;const n=Math.min(2,o.souls);steal(o,p,n);say(`${p.name} prende ${n} anime a ${o.name}!`)}},
+ janitor:{s:"scuola",n:"Bidello Gino",k:"boy",a:[10],q:1,v:1.2,art:{style:"cap",capc:"#4a6fa5",skin:"#e8b896",shirt:"#4a6fa5",acc:["keys"]},x:"Riprendi dagli scarti l'ultimo Bambino scartato.",fx:async(p,c)=>{for(let i=G.discard.length-1;i>=0;i--){const d=G.discard[i];if(B[d.id]&&isKid(d)){G.discard.splice(i,1);gainCard(p,d);say(`${p.name} ritrova ${B[d.id].n} negli scarti`);return}}}},
+ hamster:{s:"scuola",n:"Criceto",k:"animal",a:[5],q:2,v:1.2,x:"Prendi 1 anima. Se hai almeno 3 Animali, prendine 3.",fx:async(p,c)=>gain(p,p.cards.filter(k=>B[k.id].k==="animal").length>=3?3:1,c)},
+ goldfish:{s:"scuola",n:"Pesce Rosso",k:"animal",a:[11],q:2,v:2,x:"Compito: se hai almeno 6 carte, prendi 4 anime.",fx:async(p,c)=>{if(p.cards.length>=6)gain(p,4,c)}},
+ turtle:{s:"scuola",n:"Tartaruga",k:"animal",a:[9],q:2,v:1.4,x:"Compito: se hai meno anime di tutti gli avversari, prendi 4 anime.",fx:async(p,c)=>{if(opps(p).every(o=>p.souls<o.souls))gain(p,4,c)}}
 };
 const D={
  clockwork:{n:"Ticchettone",a:[7],x:"Prendi 1 anima e fai un turno extra in cui si attivano solo le tue carte.",fx:async p=>{gain(p,1);G.extraTurn=true;say(`${p.name} avrà un turno extra!`)}},
@@ -496,7 +555,13 @@ const D={
  wraithlox:{n:"Spettrolo",x:"Gli altri non possono rubarti nulla né farti scartare."},
  baphometal:{n:"Caprorock",x:"Gli altri devono sacrificare 4 carte per evocare."},
  mammon:{n:"Mammonello",x:"Compri dalla Bancarella a 2 anime invece di 3."},
- lilin:{n:"Lilin",x:"La tua Candela ti dà 2 anime invece di 1."}
+ lilin:{n:"Lilin",x:"La tua Candela ti dà 2 anime invece di 1."},
+ golosone:{s:"demoni",n:"Golosone",a:[2],x:"Prendi 6 anime.",fx:async p=>gain(p,6)},
+ strillone:{s:"demoni",n:"Strillone",a:[12],x:"Ogni avversario perde 2 anime.",fx:async p=>{for(const o of opps(p)){if(prot(o,p)||o.souls<1)continue;const n=Math.min(2,o.souls);o.souls-=n;float(o,null,"−"+n,"bad")}sfx.bad();say(`${p.name} fa strillare lo Strillone: tutti perdono anime!`)}},
+ burattinaio:{s:"demoni",n:"Gran Burattinaio",a:[5],x:"Attiva tutti i tuoi Bambini.",fx:async p=>{for(const k of p.cards.filter(isKid)){if(G.winner)return;if(!p.cards.includes(k))continue;G.rings.push(k.uid);render();await wait(G,300);await runFx(p,k)}}},
+ pennarotto:{s:"demoni",n:"Pennarotto",a:[9],x:"Prendi 2 anime e pesca la prima carta del mazzo.",fx:async p=>{gain(p,2);const d=draw();if(d){gainCard(p,d);say(`${p.name} pesca ${B[d.id].n}`)}}},
+ campanella:{s:"demoni",n:"Campanaccio",x:"Ogni volta che compri dalla Bancarella, prendi 1 anima."},
+ specchio:{s:"demoni",n:"Specchiaccio",x:"Quando un avversario evoca un Demone, prendi 2 anime."}
 };
 
 // ================= SUONI =================
@@ -557,15 +622,20 @@ function gainCard(p,c){p.cards.push(c);if(B[c.id].k==="animal"&&has(p,"assmodeus
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function draw(){if(!G.deck.length){if(!G.discard.length)return null;G.deck=shuffle(G.discard);G.discard=[];log("Il mazzo viene rimescolato")}return G.deck.pop()}
 function refill(){while(G.block.length<5){const d=draw();if(!d)break;G.block.push(d)}}
-async function runFx(p,c){await B[c.id].fx(p,c)}
+// Versi registrati dagli amici: partono quando la carta si attiva
+const VOICE={cat:"gatto",dog:"cane",parrot:"pappagallo",goldfish:"gluglu"},voiceCache={};
+function voiceFor(id){const b=B[id];if(!b)return null;if(VOICE[id])return VOICE[id];if(b.t==="sweet")return b.k==="girl"?"dolce-bambina":"dolce-bambino";return null}
+function voice(id){if(!soundOn)return;const f=voiceFor(id);if(!f)return;try{const a=voiceCache[f]||(voiceCache[f]=new Audio("sounds/"+f+".mp3"));if(!a.paused&&!a.ended)return;a.currentTime=0;a.volume=.9;const pr=a.play();pr&&pr.catch(()=>{})}catch(e){}}
+async function runFx(p,c){voice(c.id);await B[c.id].fx(p,c)}
 async function wait(g,ms){await sleep(ms*SPD);if(G!==g)throw "abort"}
 function ask(p,q,opts,ai){if(p.ai)return Promise.resolve(ai(opts));return new Promise(res=>{G.pending={q,opts,res,p};render()})}
 function reveal(p,dm,sac){sfx.summon();buzz([80,60,160]);const g=G;return new Promise(res=>{const done=()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){G.reveal=null;render()}res()};G.reveal={p,dm,done,sac:sac||[]};render();setTimeout(()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){sfx.boom();shake();buzz(120)}},RM?0:1150);setTimeout(done,p.ai?Math.round(2800*SPD):9000)})}
 
 function newGame(seats){
   uid=0;
-  const deck=[];Object.keys(B).forEach(id=>{for(let i=0;i<B[id].q;i++)deck.push(mk(id))});
-  const ddeck=shuffle(Object.keys(D).map(mk));
+  const deck=[];const inSet=x=>!x||(SETUP.sets||[]).includes(x);
+  Object.keys(B).filter(id=>inSet(B[id].s)).forEach(id=>{for(let i=0;i<B[id].q;i++)deck.push(mk(id))});
+  const ddeck=shuffle(Object.keys(D).filter(id=>inSet(D[id].s)).map(mk));
   const cand=shuffle([0,1,2,3,4]);
   const players=seats.map((s,i)=>({name:(s.name||"").trim()||"Giocatore "+(i+1),ai:!!s.ai,photo:s.photo||null,souls:5,cards:[],demons:[],hand:[],ci:cand[i%5],candle:CANDLES[cand[i%5]]}));
   G={players,deck:shuffle(deck),discard:[],block:[],ddeck,turn:Math.floor(Math.random()*players.length),log:[],dice:null,winner:null,cur:null,pending:null,reveal:null,ui:{mode:null,sel:[],demon:null,detail:null,view:null,logOpen:false},extraTurn:false,onlyMine:false,busy:false,rollAnim:false,floats:[],rings:[],head:"",closedWin:false,view:Math.max(0,players.findIndex(p=>!p.ai)),handoff:null,humans:players.filter(p=>!p.ai).length};
@@ -616,7 +686,7 @@ async function doRoll(p,g){
 function countFor(p,T){return (p.candle.a.includes(T)?1:0)+p.cards.filter(c=>B[c.id].a.includes(T)).length+(G.cur===p?p.demons.filter(x=>D[x.id].a&&D[x.id].a.includes(T)).length:0)}
 async function activate(T,roller,g){
   const n=g.players.length,start=g.players.indexOf(roller);let any=false;
-  const calls=[];g.players.forEach((pl,i)=>{if(g.onlyMine&&pl!==roller)return;if(pl.candle.a.includes(T))calls.push("c"+i);pl.cards.forEach(c=>{if(B[c.id].a.includes(T))calls.push(c.uid)});if(pl===roller)pl.demons.forEach(x=>{if(D[x.id].a&&D[x.id].a.includes(T))calls.push(x.uid)})});
+  const calls=[];g.players.forEach((pl,i)=>{if(g.onlyMine&&pl!==roller)return;if(pl.candle.a.includes(T))calls.push("c"+i);pl.cards.forEach(c=>{if(B[c.id].a.includes(T))calls.push(c.uid)});if(pl===roller)pl.demons.forEach(x=>{if(D[x.id].a&&D[x.id].a.includes(T))calls.push(x.uid)})});g.actN=g.players.map((pl,i)=>calls.filter(u=>u==="c"+i||pl.cards.some(c=>c.uid===u)||pl.demons.some(x=>x.uid===u)).length);
   if(calls.length){g.rings.push(...calls);g.head=`Il ${T} attiva ${calls.length} ${calls.length===1?"carta":"carte"}!`;sfx.turn();render();await wait(g,750)}
   for(let i=0;i<n;i++){
     const pl=g.players[(start+i)%n];
@@ -629,12 +699,12 @@ async function activate(T,roller,g){
   }
   return any;
 }
-function buy(p,c){const k=cost(p);p.souls-=k;G.block.splice(G.block.indexOf(c),1);gainCard(p,c);G.bought=true;float(p,null,"−"+k,"bad");sfx.buy();say(`${p.name} compra ${B[c.id].n}`);checkWin(p)}
+function buy(p,c){const k=cost(p);p.souls-=k;G.block.splice(G.block.indexOf(c),1);gainCard(p,c);G.bought=true;if(has(p,"campanella"))gain(p,1,null,true);float(p,null,"−"+k,"bad");sfx.buy();say(`${p.name} compra ${B[c.id].n}`);checkWin(p)}
 async function summon(p,cards,dm){
-  cards.forEach(c=>discardCard(p,c));p.hand.splice(p.hand.indexOf(dm),1);p.demons.push(dm);G.summoned=true;
+  cards.forEach(c=>discardCard(p,c));p.hand.splice(p.hand.indexOf(dm),1);p.demons.push(dm);G.summoned=true;opps(p).forEach(o=>{if(has(o,"specchio"))gain(o,2,null,true)});
   say(`${p.name} evoca ${D[dm.id].n}!`);log(`(sacrificati: ${cards.map(c=>B[c.id].n).join(", ")})`);G.log.splice(0,2,G.log[1],G.log[0]);checkWin(p);await reveal(p,dm,cards);
 }
-const DVAL={lilin:3,oni:3,mammon:3,belzebimbo:3,dollagorgon:3,clockwork:3,zuzzu:2,reroll:2,succubus:2,assmodeus:2,wraithlox:2,baphometal:3,belfagor:3,gorgobello:2,moloccolo:2};
+const DVAL={golosone:3,strillone:2,burattinaio:3,pennarotto:3,campanella:2,specchio:2,lilin:3,oni:3,mammon:3,belzebimbo:3,dollagorgon:3,clockwork:3,zuzzu:2,reroll:2,succubus:2,assmodeus:2,wraithlox:2,baphometal:3,belfagor:3,gorgobello:2,moloccolo:2};
 async function aiSummon(p,g){
   if(g.summoned||!p.hand.length)return;const n=snuffN(p);if(p.cards.length<n)return;
   const cs=p.cards.slice().sort((a,b)=>val(a)-val(b)).slice(0,n);
@@ -662,7 +732,7 @@ function cardHTML(c,o={}){
   let kind,nums,name,tag,fx;
   if(c.candle){kind="candle";nums=c.candle.a;name=c.candle.n;tag="Candela";fx=`Prendi ${o.lilin?2:1} anima. Non si può scartare né rubare.`}
   else if(D[c.id]){const d=D[c.id];kind="demon";nums=d.a;name=d.n;tag=d.a?"Demone":"Demone · sempre attivo";fx=d.x}
-  else{const b=B[c.id];kind=b.k;nums=b.a;name=b.n;tag=KIND[b.k]+(b.t?` · <span class="${b.t==="sweet"?"sw":"ro"}">${b.t==="sweet"?"Dolce":"Monello"}</span>`:"");fx=b.x}
+  else{const b=B[c.id];kind=b.k;nums=b.a;name=b.n;tag=(b.s?`<span class="set">${SETN[b.s].split(" ")[0]}</span> · `:"")+KIND[b.k]+(b.t?` · <span class="${b.t==="sweet"?"sw":"ro"}">${b.t==="sweet"?"Dolce":"Monello"}</span>`:"");fx=b.x}
   return `<button class="card k-${kind} ${o.cls||""}" data-uid="${c.uid}" data-area="${o.area||""}" ${o.attr||""}><div class="art">${artFor(c)}<div class="nums">${nums?nums.map(n=>`<span>${n}</span>`).join(""):`<span class="pas">SEMPRE</span>`}</div>${o.price?`<div class="price">${o.price}</div>`:""}</div><div class="cname">${esc(name)}</div><div class="ctag">${tag}</div><div class="cfx">${esc(fx)}</div></button>`;
 }
 function miniHTML(c,area,noUid){const kind=c.candle?"candle":D[c.id]?"demon":B[c.id].k;const nums=c.candle?c.candle.a:(D[c.id]||B[c.id]).a;return `<button class="mc k-${kind}" ${noUid?"":`data-uid="${c.uid}"`} data-area="${area||""}" tabindex="-1">${artFor(c)}${nums?`<span class="mn">${nums.join(",")}</span>`:""}</button>`}
@@ -671,7 +741,8 @@ function find(u){
   for(const p of G.players){for(const arr of [p.cards,p.demons,p.hand]){const c=arr.find(x=>x.uid===u);if(c)return{c,p,where:arr===p.cards?"cards":arr===p.demons?"demons":"hand"}}}
   const c=G.block.find(x=>x.uid===u);if(c)return{c,where:"block"};return null;
 }
-let SETUP={seats:[{name:"Marco",ai:false},{name:"Andrea",ai:true},{name:"Claudio",ai:true},{name:"Irene",ai:true}]},photoFor=null;
+const SETN={circo:"Circo Maledetto",scuola:"Scuola Stregata",demoni:"Demoni nuovi"};
+let SETUP={sets:[],seats:[{name:"Marco",ai:false},{name:"Andrea",ai:true},{name:"Claudio",ai:true},{name:"Irene",ai:true}]},photoFor=null;
 try{const x=JSON.parse(localStorage.getItem("cdm-setup"));if(x&&Array.isArray(x.seats)&&x.seats.length>=2)SETUP=x}catch(e){}
 SETUP.seats.forEach((x,i)=>x.ai=i>0);
 function saveSetup(){try{localStorage.setItem("cdm-setup",JSON.stringify(SETUP))}catch(e){}}
@@ -686,6 +757,7 @@ function render(){
     ${n<4?`<button class="btn" data-add style="margin-top:10px;width:100%">+ Aggiungi giocatore</button>`:""}
     <p class="note">Il primo sei tu, gli altri li muove il computer. Metti nomi e foto dei tuoi amici e sfidali. Le foto restano solo su questo telefono.</p></div>
     <div><div class="lbl" style="margin-bottom:8px">Velocità del gioco</div><div class="seg">${[["Lenta",1.8],["Normale",1.3],["Veloce",.7]].map(([l,v])=>`<button class="btn" data-spd="${v}" aria-pressed="${SPD===v}">${l}</button>`).join("")}</div></div>
+    <div><div class="lbl" style="margin-bottom:8px">Mazzi in gioco</div><div class="decks">${[["base","Classico","Il mazzo base, sempre in gioco"],["circo","Circo Maledetto","Clown, acrobati e belve: più carte si attivano insieme, più anime"],["scuola","Scuola Stregata","Maestri, bulli e animaletti di classe con i compiti da completare"],["demoni","Demoni nuovi","Sei demoni in più da evocare"]].map(([k,l,d])=>{const on=k==="base"||(SETUP.sets||[]).includes(k);return `<button class="btn deckopt" ${k==="base"?"disabled":`data-set="${k}"`} aria-pressed="${on}"><b>${on?"✓ ":"+ "}${l}</b><small>${d}</small></button>`}).join("")}</div></div>
     <p class="err" id="err"></p>
     <button class="btn go" id="start" style="padding:16px;font-size:1.4rem">Gioca!</button>
     <div class="rules"><b>Come si gioca</b><ol>
@@ -812,10 +884,11 @@ function flushFx(){
 
 // ================= INPUT =================
 document.addEventListener("click",async e=>{
-  const t=e.target.closest("[data-photo],[data-ai],[data-add],[data-rm],[data-spd],#start,#quit,#snd,#logT,[data-a],[data-ans],[data-uid],[data-pl]");if(!t)return;
+  const t=e.target.closest("[data-photo],[data-set],[data-ai],[data-add],[data-rm],[data-spd],#start,#quit,#snd,#logT,[data-a],[data-ans],[data-uid],[data-pl]");if(!t)return;
   if(!G){
     if(t.dataset.photo!==undefined){photoFor=+t.dataset.photo;const inp=document.getElementById("photoIn");inp.value="";inp.click();return}
     if(t.dataset.ai!==undefined){const x=SETUP.seats[+t.dataset.ai];x.ai=!x.ai;saveSetup();render();return}
+    if(t.dataset.set!==undefined){const k=t.dataset.set,a=SETUP.sets=SETUP.sets||[];const i=a.indexOf(k);if(i>=0)a.splice(i,1);else a.push(k);saveSetup();render();return}
     if(t.dataset.add!==undefined){const used=SETUP.seats.map(x=>x.name);const nm=["Marco","Andrea","Claudio","Irene"].find(x=>!used.includes(x))||"Giocatore";SETUP.seats.push({name:nm,ai:true,photo:null});saveSetup();render();return}
     if(t.dataset.rm!==undefined){SETUP.seats.splice(+t.dataset.rm,1);saveSetup();render();return}
   }
