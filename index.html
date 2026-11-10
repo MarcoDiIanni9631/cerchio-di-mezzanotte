@@ -256,10 +256,28 @@ small.ai{font-family:var(--body);font-size:.6rem;font-weight:900;background:var(
   .grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}
   .bar .in{max-width:760px}
   .modal:not(.ritual):not(.vs):not(.reveal){align-items:center}
+  /* Tavolo a pentagono: le 5 carte della Bancarella sui vertici, i dadi al centro della stella */
+  .table{display:grid;grid-template-areas:"head" "track" "penta";background-image:none;row-gap:10px}
+  .table>.head{grid-area:head}.table>.track{grid-area:track}
+  .table>.sec{grid-area:penta;align-self:start;z-index:2;pointer-events:none}.table>.sec>*{pointer-events:auto}
+  .table>.sec .lbl{max-width:8.5em;line-height:1.5}
+  .table>.dicebar{grid-area:penta;align-self:center;justify-self:center;z-index:2;margin-top:20px}
+  .table>.rowscroll{grid-area:penta;position:relative;display:block;height:560px;padding:0;overflow:visible;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpolygon points='50,18 86,45 72,82 28,82 14,45' fill='%2312081d' fill-opacity='.45' stroke='%23ffc23f' stroke-opacity='.4' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3Cpolygon points='50,18 72,82 14,45 86,45 28,82' fill='none' stroke='%23ff4d3d' stroke-opacity='.55' stroke-width='3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+  .table>.rowscroll>.card{position:absolute;width:98px}
+  .table>.rowscroll>.card:nth-child(1){left:calc(50% - 49px);top:0}
+  .table>.rowscroll>.card:nth-child(2){left:calc(86% - 49px);top:150px}
+  .table>.rowscroll>.card:nth-child(3){left:calc(72% - 49px);top:360px}
+  .table>.rowscroll>.card:nth-child(4){left:calc(28% - 49px);top:360px}
+  .table>.rowscroll>.card:nth-child(5){left:calc(14% - 49px);top:150px}
+  .table>.rowscroll>.empty{position:absolute;left:0;right:0;top:45%;text-align:center}
 }
+/* Su schermi grandi ingrandisce tutto, come lo zoom di Chrome al 115-125% */
+@media (min-width:1500px) and (hover:hover) and (pointer:fine){#app,#bar,#modal{zoom:1.15}}
+@media (min-width:1700px) and (hover:hover) and (pointer:fine){#app,#bar,#modal{zoom:1.25}}
 /* PC con schermo grande: tre colonne, avversari a sinistra, tavolo al centro, tu a destra */
 @media (min-width:1280px) and (hover:hover) and (pointer:fine){
-  .wrap{grid-template-columns:minmax(240px,300px) minmax(0,1fr) minmax(0,1fr);
+  .wrap{grid-template-columns:minmax(220px,270px) minmax(0,1.2fr) minmax(0,1fr);
     grid-template-areas:"top top top" "opps table me" "log table me";grid-template-rows:auto auto 1fr}
   .opps{flex-direction:column}.opps>.oppb{flex:none}
 }
@@ -397,8 +415,9 @@ const RM=!!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").ma
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const r6=()=>1+Math.floor(Math.random()*6);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let G=null,uid=0,SPD=1,soundOn=true;
-try{SPD=+localStorage.getItem("lsd-spd")||1;soundOn=localStorage.getItem("lsd-snd")!=="0"}catch(e){}
+const SPEEDS=[1.8,1.3,.7];// Lenta, Normale, Veloce (moltiplica tutte le pause)
+let G=null,uid=0,SPD=1.3,soundOn=true;
+try{const v=+localStorage.getItem("cdm-spd");if(SPEEDS.includes(v))SPD=v;soundOn=localStorage.getItem("lsd-snd")!=="0"}catch(e){}
 const mk=id=>({uid:++uid,id});
 const B={
  caroline:{n:"Dolce Carlotta",k:"girl",t:"sweet",a:[2],q:1,v:5,art:{style:"pigtails",hair:"#f7c948",skin:"#ffd9b8",shirt:"#ff8fb8",acc:["bow"]},x:"Prendi 5 anime.",fx:async(p,c)=>gain(p,5,c)},
@@ -533,7 +552,7 @@ function refill(){while(G.block.length<5){const d=draw();if(!d)break;G.block.pus
 async function runFx(p,c){await B[c.id].fx(p,c)}
 async function wait(g,ms){await sleep(ms*SPD);if(G!==g)throw "abort"}
 function ask(p,q,opts,ai){if(p.ai)return Promise.resolve(ai(opts));return new Promise(res=>{G.pending={q,opts,res,p};render()})}
-function reveal(p,dm,sac){sfx.summon();buzz([80,60,160]);const g=G;return new Promise(res=>{const done=()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){G.reveal=null;render()}res()};G.reveal={p,dm,done,sac:sac||[]};render();setTimeout(()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){sfx.boom();shake();buzz(120)}},RM?0:1150);setTimeout(done,p.ai?(SPD<1?2800:3500):9000)})}
+function reveal(p,dm,sac){sfx.summon();buzz([80,60,160]);const g=G;return new Promise(res=>{const done=()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){G.reveal=null;render()}res()};G.reveal={p,dm,done,sac:sac||[]};render();setTimeout(()=>{if(G===g&&G.reveal&&G.reveal.dm===dm){sfx.boom();shake();buzz(120)}},RM?0:1150);setTimeout(done,p.ai?Math.round(2800*SPD):9000)})}
 
 function newGame(seats){
   uid=0;
@@ -658,7 +677,7 @@ function render(){
     <div><div class="lbl" style="margin-bottom:8px">Tu contro i tuoi amici</div><div class="seats">${SETUP.seats.map((s,i)=>`<div class="seat"><button class="pick" data-photo="${i}" aria-label="Scegli la foto di ${esc(s.name)}">${avHTML(s,i)}<span class="cam">${s.photo?"cambia":"+ foto"}</span></button><input class="nm" id="nm${i}" data-name="${i}" value="${esc(s.name)}" maxlength="12" autocomplete="off" aria-label="Nome del giocatore ${i+1}"><span class="tag${i?"":" you"}">${i?"Avversario":"Tu"}</span>${n>2&&i>0?`<button class="x" data-rm="${i}" aria-label="Togli ${esc(s.name)}">✕</button>`:""}</div>`).join("")}</div>
     ${n<4?`<button class="btn" data-add style="margin-top:10px;width:100%">+ Aggiungi giocatore</button>`:""}
     <p class="note">Il primo sei tu, gli altri li muove il computer. Metti nomi e foto dei tuoi amici e sfidali. Le foto restano solo su questo telefono.</p></div>
-    <div><div class="lbl" style="margin-bottom:8px">Velocità degli avversari</div><div class="seg"><button class="btn" data-spd="1" aria-pressed="${SPD===1}">Normale</button><button class="btn" data-spd="0.5" aria-pressed="${SPD===.5}">Veloce</button></div></div>
+    <div><div class="lbl" style="margin-bottom:8px">Velocità del gioco</div><div class="seg">${[["Lenta",1.8],["Normale",1.3],["Veloce",.7]].map(([l,v])=>`<button class="btn" data-spd="${v}" aria-pressed="${SPD===v}">${l}</button>`).join("")}</div></div>
     <p class="err" id="err"></p>
     <button class="btn go" id="start" style="padding:16px;font-size:1.4rem">Gioca!</button>
     <div class="rules"><b>Come si gioca</b><ol>
@@ -746,6 +765,7 @@ function render(){
   flushFx();
 }
 const flying=new Map();
+const ZM=()=>{const a=document.getElementById("app");return a&&parseFloat(getComputedStyle(a).zoom)||1};
 function snapshot(){const m=new Map();document.querySelectorAll("#app [data-uid]").forEach(el=>{const u=el.dataset.uid;if(u[0]==="h"||u==="cx")return;const r=el.getBoundingClientRect();if(!r.width)return;m.set(u,{r,html:el.outerHTML,area:el.dataset.area||""})});return m}
 function rehide(){flying.forEach((_,u)=>{const e=document.querySelector(`#app [data-uid="${u}"]`);if(e)e.style.visibility="hidden"})}
 function animateDiff(before){if(RM)return;const after=snapshot();const dk=document.getElementById("deckPile");const dr=dk&&dk.getBoundingClientRect();
@@ -754,17 +774,17 @@ function animateDiff(before){if(RM)return;const after=snapshot();const dk=docume
     if(b.area!==a.area&&(Math.abs(b.r.left-a.r.left)+Math.abs(b.r.top-a.r.top))>6)fly(u,b.r,a,"move")});
   let k=0;before.forEach((b,u)=>{if(!after.has(u)&&k<10){k++;burn(b)}})}
 function fly(u,from,a,kind){const el=document.querySelector(`#app [data-uid="${u}"]`);if(!el)return;const L=document.getElementById("fx");const to=a.r;
-  const g=document.createElement("div");g.className="ghost";g.innerHTML=a.html;const gc=g.firstElementChild;gc.style.width=to.width+"px";gc.style.visibility="visible";
-  Object.assign(g.style,{left:to.left+"px",top:to.top+"px",width:to.width+"px"});L.appendChild(g);
-  const sx=from.width/to.width,dx=from.left-to.left,dy=from.top-to.top;flying.set(u,1);el.style.visibility="hidden";
+  const g=document.createElement("div");g.className="ghost";g.innerHTML=a.html;const z=ZM(),gc=g.firstElementChild;gc.style.width=to.width/z+"px";gc.style.visibility="visible";
+  Object.assign(g.style,{zoom:z,left:to.left/z+"px",top:to.top/z+"px",width:to.width/z+"px"});L.appendChild(g);
+  const sx=from.width/to.width,dx=(from.left-to.left)/z,dy=(from.top-to.top)/z;flying.set(u,1);el.style.visibility="hidden";
   const dur=T(kind==="deal"?480:650);
   const anim=g.animate([{transform:`translate(${dx}px,${dy}px) scale(${sx})${kind==="deal"?" rotateY(90deg)":""}`,opacity:kind==="deal"?.4:1},{transform:`translate(${dx*.45}px,${dy*.45-70}px) scale(${(sx+1)/2*1.15}) rotate(${kind==="deal"?-10:7}deg)`,opacity:1,offset:.5},{transform:"none",opacity:1}],{duration:dur,easing:"cubic-bezier(.3,.7,.3,1)"});
   sfx.whoosh();
   anim.onfinish=()=>{g.remove();flying.delete(u);const e2=document.querySelector(`#app [data-uid="${u}"]`);if(e2){e2.style.visibility="";e2.animate([{transform:"scale(1.12)"},{transform:"none"}],{duration:200})}sfx.thud()}}
 function embers(r,n){const L=document.getElementById("fx");for(let i=0;i<n;i++){const e=document.createElement("div");e.className="emb";e.style.left=(r.left+Math.random()*r.width)+"px";e.style.top=(r.top+r.height*(.3+Math.random()*.6))+"px";L.appendChild(e);
   e.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.random()*40-20}px,${-60-Math.random()*90}px) scale(.2)`,opacity:0}],{duration:700+Math.random()*600,delay:Math.random()*200,easing:"ease-out",fill:"both"}).onfinish=()=>e.remove()}}
-function burn(b){const L=document.getElementById("fx");const g=document.createElement("div");g.className="ghost";g.innerHTML=b.html;g.firstElementChild.style.width=b.r.width+"px";g.firstElementChild.style.visibility="visible";
-  Object.assign(g.style,{left:b.r.left+"px",top:b.r.top+"px",width:b.r.width+"px"});L.appendChild(g);
+function burn(b){const L=document.getElementById("fx");const g=document.createElement("div");g.className="ghost";g.innerHTML=b.html;const z=ZM();g.firstElementChild.style.width=b.r.width/z+"px";g.firstElementChild.style.visibility="visible";
+  Object.assign(g.style,{zoom:z,left:b.r.left/z+"px",top:b.r.top/z+"px",width:b.r.width/z+"px"});L.appendChild(g);
   g.animate([{filter:"brightness(1)",transform:"none",opacity:1},{filter:"brightness(2.4) sepia(1) saturate(3) hue-rotate(-25deg)",transform:"scale(1.06) rotate(-3deg)",opacity:1,offset:.35},{filter:"brightness(.2)",transform:"scale(.5) translateY(-30px) rotate(8deg)",opacity:0}],{duration:T(750),easing:"ease-in"}).onfinish=()=>g.remove();
   embers(b.r,b.r.width>60?16:8);sfx.burn()}
 function counterEl(i){return i===G.view?document.getElementById("mySouls"):document.querySelector(`#app [data-pl="${i}"] .soul`)}
@@ -791,7 +811,7 @@ document.addEventListener("click",async e=>{
     if(t.dataset.add!==undefined){const used=SETUP.seats.map(x=>x.name);const nm=["Marco","Andrea","Claudio","Irene"].find(x=>!used.includes(x))||"Giocatore";SETUP.seats.push({name:nm,ai:true,photo:null});saveSetup();render();return}
     if(t.dataset.rm!==undefined){SETUP.seats.splice(+t.dataset.rm,1);saveSetup();render();return}
   }
-  if(t.dataset.spd){SPD=+t.dataset.spd;try{localStorage.setItem("lsd-spd",SPD)}catch(x){}render();return}
+  if(t.dataset.spd){SPD=+t.dataset.spd;try{localStorage.setItem("cdm-spd",SPD)}catch(x){}render();return}
   if(t.id==="start"){if(!SETUP.seats.some(x=>!x.ai)){document.getElementById("err").textContent="Serve almeno una persona: tocca «Computer» su un giocatore.";return}tone(1,.01);newGame(SETUP.seats);return}
   if(!G)return;
   if(t.closest(".ritual")){G.reveal&&G.reveal.done();return}
