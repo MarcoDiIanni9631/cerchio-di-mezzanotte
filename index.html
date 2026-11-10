@@ -742,8 +742,10 @@ function find(u){
   const c=G.block.find(x=>x.uid===u);if(c)return{c,where:"block"};return null;
 }
 const SETN={circo:"Circo Maledetto",scuola:"Scuola Stregata",demoni:"Demoni nuovi"};
-let SETUP={sets:[],seats:[{name:"Marco",ai:false},{name:"Andrea",ai:true},{name:"Claudio",ai:true},{name:"Irene",ai:true}]},photoFor=null;
+const ALLSETS=["circo","scuola","demoni"];
+let SETUP={sets:ALLSETS.slice(),seats:[{name:"Marco",ai:false},{name:"Andrea",ai:true},{name:"Claudio",ai:true},{name:"Irene",ai:true}]},photoFor=null;
 try{const x=JSON.parse(localStorage.getItem("cdm-setup"));if(x&&Array.isArray(x.seats)&&x.seats.length>=2)SETUP=x}catch(e){}
+if(!Array.isArray(SETUP.sets))SETUP.sets=ALLSETS.slice();
 SETUP.seats.forEach((x,i)=>x.ai=i>0);
 function saveSetup(){try{localStorage.setItem("cdm-setup",JSON.stringify(SETUP))}catch(e){}}
 function render(){
